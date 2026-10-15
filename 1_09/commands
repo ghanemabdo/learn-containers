@@ -1,0 +1,1 @@
+docker run -v /Users/abdurrahmanghanem/Learn/docker/devops-with-docker/learn-containers/1_09/service.log:/usr/src/app/text.log -d devopsdockeruh/simple-web-service
