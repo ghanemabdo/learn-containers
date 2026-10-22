@@ -1,1 +1,30 @@
 # use here COPY 1_12 .
+FROM ubuntu:22.04
+
+WORKDIR /src/usr/app
+
+# Install Node.js (base image has no curl; build runs as root, so no sudo)
+RUN apt-get update && apt-get install -y curl
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash
+RUN apt-get install -y nodejs
+
+# Install deps
+COPY 1_12/package.json package.json
+COPY 1_12/package-lock.json package-lock.json
+RUN npm install
+RUN npm install -g serve
+
+# Copy sources
+COPY 1_12/public ./public
+COPY 1_12/src ./src
+
+# Set the backend url
+ENV REACT_APP_BACKEND_URL=http://localhost:8080
+
+# Build the project
+RUN npm run build
+
+# Expose port 5001
+EXPOSE 5001
+
+CMD ["serve", "-s", "-l", "5001", "build"]

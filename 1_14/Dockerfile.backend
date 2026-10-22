@@ -1,1 +1,15 @@
 # use here COPY 1_13 .
+FROM golang:1.16
+
+WORKDIR /src/usr/app
+
+EXPOSE 8080
+
+ENV REQUEST_ORIGIN=http://localhost:5001
+
+# Copy project assets to the image
+COPY 1_13/ .
+
+RUN go build
+
+CMD ["./server"]
